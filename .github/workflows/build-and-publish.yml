@@ -7,7 +7,6 @@ on:
       - master
 
 env:
-  # TODO: Change variable to your image's name.
   IMAGE_NAME: nginx
 
 jobs:
@@ -16,7 +15,7 @@ jobs:
   # See also https://docs.docker.com/docker-hub/builds/
   push:
     runs-on: ubuntu-latest
-
+    environment: develop
     steps:
       - uses: actions/checkout@v2
 
