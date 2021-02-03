@@ -1,8 +1,7 @@
-name: Docker
+name: Build & Push Image
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
     branches:
       - master
 
@@ -11,8 +10,6 @@ env:
 
 jobs:
 
-  # Push image to GitHub Packages.
-  # See also https://docs.docker.com/docker-hub/builds/
   push:
     runs-on: ubuntu-latest
     environment: develop
