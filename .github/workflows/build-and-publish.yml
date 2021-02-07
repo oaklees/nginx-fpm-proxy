@@ -33,7 +33,7 @@ jobs:
           # If untagged, use latest
           [ "$VERSION" == "master" ] && VERSION="latest"
 
-          IMAGE=oaklees/nginx:$VERSION
+          IMAGE=oaklees/${IMAGE_NAME}:$VERSION
 
           docker build --tag $IMAGE .
           docker push $IMAGE
