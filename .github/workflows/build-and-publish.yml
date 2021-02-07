@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - v*
 
 env:
   IMAGE_NAME: nginx
@@ -11,16 +13,27 @@ env:
 jobs:
 
   push:
+
     runs-on: ubuntu-latest
-    environment: develop
+
     steps:
       - uses: actions/checkout@v2
-
-      - name: Build image
-        run: docker build . --tag ${{ github.actor }}/$IMAGE_NAME
 
       - name: Log into registry
         run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ github.actor }} --password-stdin
 
-      - name: Push image
-        run: docker push ${{ github.actor }}/$IMAGE_NAME:latest
+      - name: Publish image
+        run: |
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # If untagged, use latest
+          [ "$VERSION" == "master" ] && VERSION="latest"
+
+          IMAGE=oaklees/nginx:$VERSION
+
+          docker build --tag $IMAGE .
+          docker push $IMAGE
