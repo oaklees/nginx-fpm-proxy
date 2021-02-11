@@ -3,7 +3,7 @@ ARG ALPINE_VERSION=3.7
 FROM alpine:${ALPINE_VERSION} as base
 
 # Default env values
-ENV PHP_FPM_PORT=9000
+ENV PHP_FPM_PORT=9000 PHP_FPM_HOST=localhost
 
 # Add nginx and setup
 RUN apk --no-cache add nginx gettext
